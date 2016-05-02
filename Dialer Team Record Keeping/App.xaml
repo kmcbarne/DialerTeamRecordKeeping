@@ -13,7 +13,7 @@
             <Setter Property="IsReadOnly" Value="True" />
             <Setter Property="IsTabStop" Value="True" />
             <Setter Property="Width" Value="50" />
-            <Setter Property="Margin" Value="0,0,2,3" />
+            <Setter Property="Margin" Value="0,0,2,3"  />
         </Style>
         <!--Style for data entry TextBox control-->
         <Style x:Key="dataEntryTextBox" TargetType="TextBox">
