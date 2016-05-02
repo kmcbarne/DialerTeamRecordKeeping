@@ -22,7 +22,7 @@
             <Setter Property="Margin" Value="0,0,2,3" />
             <Setter Property="Text" Value="0" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />            
+            <Setter Property="VerticalContentAlignment" Value="Center"  />            
         </Style>
     </Application.Resources>
 </Application>
