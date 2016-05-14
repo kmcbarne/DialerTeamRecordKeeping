@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dialer_Team_Record_Keeping"
         mc:Ignorable="d"
-        Title="MainWindow" Height="434" Width="650">
+        Title="MainWindow" Height="550" Width="0" FontSize="14" MinWidth="610">
+    <Window.Resources>
+        <local:AddListRecordsConverter x:Key="AddListRecordsConverter" />
+        <local:SubtractListRecordsConverter x:Key="SubtractListRecordsConverter" />
+        <local:AverageListRecordsConverter x:Key="AverageListRecordsConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -15,127 +20,266 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel x:Name="toolbar" Grid.Column="0" Grid.Row="0" Height="34" Orientation="Horizontal">
-            <Button x:Name="sendWrap" Content="Send Wrap" Height="30" Width="70" Margin="2,2,4,2" Click="sendWrap_Click"/>
-            <Button x:Name="sendEmail" Content="Send Email" Height="30" Width="70" Margin="0,2,4,2" Click="sendEmail_Click"/>
+            <Button x:Name="sendWrap" Content="Send Wrap" Height="30" Margin="2,2,4,2" Padding="8,0,8,0" Click="sendWrap_Click" />
+            <Button x:Name="sendEmail" Content="Send Email" Height="30" Margin="0,2,4,2" Padding="8,0,8,0" Click="sendEmail_Click" />
+            <Button x:Name="importData" Content="Import Data" Height="30" Margin="0,2,4,2" Padding="8,0,8,0" Click="importData_Click" />
+            <Button x:Name="saveData" Content="Save Data" Height="30" Margin="0,2,4,2" Padding="8,0,8,0" Click="saveData_Click" />
+            <Button x:Name="currentWindowSize" Content="Show Window Size" Height="30" Margin="0,2,4,2" Padding="8,0,8,0"  Background="Orange" Click="currentWindowSize_Click" />
         </StackPanel>
         <TabControl x:Name="departmentSelector" Grid.Column="0" Grid.Row="1">
             <TabItem Header="Notes" x:Name="notesTab">
             </TabItem>
             <TabItem Header="Dialer Team" x:Name="dialerTeamTab">
-
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                    <DatePicker x:Name="dialerRecordsSelect" Grid.Row="0" Width="110" Margin="0,2,0,2" KeyDown="dialerRecordsSelect_KeyDown" SelectedDateChanged="dialerRecordsSelect_SelectedDateChanged"/>
+                    <DataGrid x:Name="dialerRecordsDataGrid" Grid.Row="1" ColumnWidth="Auto" ColumnHeaderStyle="{StaticResource datagridCenterHeaderStyle}"
+                              CellStyle="{StaticResource datagridCenterCellStyle}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="5,5,5,5"
+                              AutoGenerateColumns="True" AutoGeneratingColumn="dialerRecordsDataGrid_AutoGeneratingColumn" RowHeaderWidth="0"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Early Stage" x:Name="earlyStageTab" MouseLeftButtonUp="earlyStageTab_MouseLeftButtonUp">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Button x:Name="sendSpecialES" Content="Send Special" Grid.Column="1" Grid.Row="0" />
-                    <Button x:Name="sendEmailES" Content="Send Email" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" />
-                    <Button x:Name="importCallDataES" Content="Import Call Data" Grid.Column="7" Grid.Row="0" Grid.ColumnSpan="2" />
-                    <Button x:Name="importWrapDataES" Content="Import Wrap Data" Grid.Column="9" Grid.Row="0" Grid.ColumnSpan="2" />
-                    <Label Content="Records" Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
-                    <Label Content="Dials" Grid.Column="2" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
-                    <Label Content="Saturation" Grid.Column="3" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
-                    <TextBlock Text="% of Total Callables" Grid.Column="4" Grid.Row="2" TextAlignment="Center" TextWrapping="Wrap" Width="50" />
-                    <TextBlock Text="% of Accounts Worked" Grid.Column="5" Grid.Row="2" TextAlignment="Center" TextWrapping="Wrap" Width="50"/>
-                    <Label Content="Pass %" Grid.Column="6" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
-                    <TextBlock Text="% of Accounts Worked" Grid.Column="7" Grid.Row="2" TextAlignment="Center" TextWrapping="Wrap" Width="50"/>
-                    <Label Content="Pass %" Grid.Column="8" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
-                    <TextBlock Text="% of Accounts Worked" Grid.Column="9" Grid.Row="2" TextAlignment="Center" TextWrapping="Wrap" Width="50"/>
-                    <Label Content="Pass %" Grid.Column="10" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
-                    <Label Content="Mass Cell" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" />
-                    <Label Content="MI Cell" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" />
-                    <Label Content="All" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" />
-                    <Label Content="Mass" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" />
-                    <Label Content="NH" Grid.Column="0" Grid.Row="7" HorizontalContentAlignment="Right" />
-                    <Label Content="Non-Cont" Grid.Column="0" Grid.Row="8" HorizontalContentAlignment="Right" />
-                    <Label Content="OR" Grid.Column="0" Grid.Row="9" HorizontalContentAlignment="Right" />
-                    <Label Content="Combined" Grid.Column="0" Grid.Row="10" HorizontalContentAlignment="Right" FontWeight="Bold"/>
-                    <TextBox x:Name="massCellRecords" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="3" LostFocus="massCellRecords_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="massCellDials" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="3" LostFocus="massCellDials_LostFocus"  GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="massCellSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="3" />
-                    <TextBox x:Name="massCellPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="3" />
-                    <TextBox x:Name="massCellPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="3"  LostFocus="massCellPercentWorked_LostFocus"  GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="massCellPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="3" />
-                    <TextBox x:Name="miCellRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="4" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="miCellRecords_LostFocus" />
-                    <TextBox x:Name="miCellDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="4" LostFocus="miCellDials_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="miCellSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="4" />
-                    <TextBox x:Name="miCellPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="4" />
-                    <TextBox x:Name="miCellPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="4" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="miCellPercentWorked_LostFocus" />
-                    <TextBox x:Name="miCellPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="4" />
-                    <TextBox x:Name="allRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allRecords_LostFocus" />
-                    <TextBox x:Name="allDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allDials_LostFocus" />
-                    <TextBox x:Name="allSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="5" />
-                    <TextBox x:Name="allPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="5" />
-                    <TextBox x:Name="allPercentWorkedOne"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allPercentWorkedOne_LostFocus" />
-                    <TextBox x:Name="allPassPercentOne" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="5" />
-                    <TextBox x:Name="allPercentWorkedTwo"  Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allPercentWorkedTwo_LostFocus" />
-                    <TextBox x:Name="allPassPercentTwo" Style="{StaticResource readOnlyTextBox}" Grid.Column="8" Grid.Row="5" />
-                    <TextBox x:Name="allPercentWorkedThree"  Style="{StaticResource dataEntryTextBox}" Grid.Column="9" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allPercentWorkedThree_LostFocus" />
-                    <TextBox x:Name="allPassPercentThree" Style="{StaticResource readOnlyTextBox}" Grid.Column="10" Grid.Row="5" />
-                    <TextBox x:Name="massRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="6" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="massRecords_LostFocus" />
-                    <TextBox x:Name="massDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="6" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="massDials_LostFocus" />
-                    <TextBox x:Name="massSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="6" />
-                    <TextBox x:Name="massPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="6" />
-                    <TextBox x:Name="massPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="6" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="massPercentWorked_LostFocus" />
-                    <TextBox x:Name="massPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="6" />
-                    <TextBox x:Name="nhRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="7" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nhRecords_LostFocus" />
-                    <TextBox x:Name="nhDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="7" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nhDials_LostFocus" />
-                    <TextBox x:Name="nhSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="7" />
-                    <TextBox x:Name="nhPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="7" />
-                    <TextBox x:Name="nhPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="7" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nhPercentWorked_LostFocus" />
-                    <TextBox x:Name="nhPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="7" />
-                    <TextBox x:Name="nonContRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="8" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nonContRecords_LostFocus" />
-                    <TextBox x:Name="nonContDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="8" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nonContDials_LostFocus" />
-                    <TextBox x:Name="nonContSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="8" />
-                    <TextBox x:Name="nonContPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="8" />
-                    <TextBox x:Name="nonContPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="8" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nonContPercentWorked_LostFocus" />
-                    <TextBox x:Name="nonContPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="8" />
-                    <TextBox x:Name="orRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="9" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="orRecords_LostFocus" />
-                    <TextBox x:Name="orDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="9" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="orDials_LostFocus" />
-                    <TextBox x:Name="orSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="9" />
-                    <TextBox x:Name="orPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="9" />
-                    <TextBox x:Name="orPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="9" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="orPercentWorked_LostFocus" />
-                    <TextBox x:Name="orPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="9" />
-                    <TextBox x:Name="combinedRecords" Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="10" />
-                    <TextBox x:Name="combinedDials" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="10" />
-                    <TextBox x:Name="combinedSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="10" />
-                    <TextBox x:Name="combinedPercentWorkedOne" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="10" />
-                    <TextBox x:Name="combinedPercentWorkedTwo" Style="{StaticResource readOnlyTextBox}" Grid.Column="7" Grid.Row="10"  />
-                    <TextBox x:Name="combinedPercentWorkedThree" Style="{StaticResource readOnlyTextBox}" Grid.Column="9" Grid.Row="10"  />
-                    
-                </Grid>
+                <DockPanel LastChildFill="True">
+                    <Grid x:Name="esGrid" DockPanel.Dock="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" x:Name="esGridRowZero"/>
+                            <RowDefinition Height="Auto" x:Name="esGridRowOne"/>
+                            <RowDefinition Height="Auto" x:Name="esGridRowTwo"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <DatePicker x:Name="recordDateES" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectedDateChanged="recordDateES_SelectedDateChanged"/>
+                        <Label Content="Records" Grid.Column="1" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                        <Label Content="Dials" Grid.Column="2" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                        <Label Content="Saturation" Grid.Column="3" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                        <TextBlock Text="% of Total Callables" Grid.Column="4" Grid.Row="3" TextAlignment="Center" TextWrapping="Wrap" Width="60" />
+                        <TextBlock Text="% of Accounts Worked" Grid.Column="5" Grid.Row="3" TextAlignment="Center" TextWrapping="Wrap" Width="60"/>
+                        <Label Content="Pass %" Grid.Column="6" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                        <Label Content="Pass %" Grid.Column="6" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                        <!--<Label Content="Records" Grid.Column="8" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                    <Label Content="Dials" Grid.Column="9" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                    <Label Content="Saturation" Grid.Column="10" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                    <TextBlock Text="% of Total Callables" Grid.Column="11" Grid.Row="3" TextAlignment="Center" TextWrapping="Wrap" Width="60" />
+                    <TextBlock Text="% of Accounts Worked" Grid.Column="12" Grid.Row="3" TextAlignment="Center" TextWrapping="Wrap" Width="60"/>
+                    <Label Content="Pass %" Grid.Column="13" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                    <TextBlock Text="% of Accounts Worked" Grid.Column="7" Grid.Row="3" TextAlignment="Center" TextWrapping="Wrap" Width="60"/>
+                    <Label Content="Pass %" Grid.Column="8" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                    <TextBlock Text="% of Accounts Worked" Grid.Column="9" Grid.Row="3" TextAlignment="Center" TextWrapping="Wrap" Width="60"/>
+                    <Label Content="Pass %" Grid.Column="10" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" /> -->
+                        <Label Content="Mass Cell" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" />
+                        <Label Content="MI Cell" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" />
+                        <Label Content="All" Grid.Column="0" Grid.Row="6" HorizontalContentAlignment="Right" />
+                        <Label Content="Mass" Grid.Column="0" Grid.Row="9" HorizontalContentAlignment="Right" />
+                        <Label Content="NH" Grid.Column="0" Grid.Row="10" HorizontalContentAlignment="Right" />
+                        <Label Content="Non-Cont" Grid.Column="0" Grid.Row="11" HorizontalContentAlignment="Right" />
+                        <Label Content="OR" Grid.Column="0" Grid.Row="12" HorizontalContentAlignment="Right" />
+                        <Label Content="Combined" Grid.Column="0" Grid.Row="13" HorizontalContentAlignment="Right" FontWeight="Bold"/>
+                        <TextBox x:Name="massCellRecords" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="4" LostFocus="massCellRecords_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                        <TextBox x:Name="massCellDials" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="4" LostFocus="massCellDials_LostFocus"  GotFocus="SelectAllOnFocus_GotFocus" />
+                        <TextBox x:Name="massCellSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="4" />
+                        <TextBox x:Name="massCellPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="4" />
+                        <TextBox x:Name="massCellPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="4"  LostFocus="massCellPercentWorked_LostFocus"  GotFocus="SelectAllOnFocus_GotFocus" />
+                        <TextBox x:Name="massCellPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="4" Text="0.0" />
+                        <TextBox x:Name="miCellRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="miCellRecords_LostFocus" />
+                        <TextBox x:Name="miCellDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="5" LostFocus="miCellDials_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                        <TextBox x:Name="miCellSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="5" />
+                        <TextBox x:Name="miCellPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="5" />
+                        <TextBox x:Name="miCellPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="miCellPercentWorked_LostFocus" />
+                        <TextBox x:Name="miCellPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="5" Text="0.0" />
+
+                        <TextBox x:Name="allRecords" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="6" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allRecords_LostFocus" />
+
+                        <!-- Event members from TextBox allRecords
+                         GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allRecords_LostFocus"
+                        -->
+                        <TextBox x:Name="allDials"  Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="6" LostFocus="allDials_LostFocus" GotFocus="SelectAllOnFocus_GotFocus">
+                            <TextBox.Text>
+                                <MultiBinding Converter="{StaticResource AddListRecordsConverter}">
+                                    <Binding ElementName="allDialsOne" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allDialsTwo" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allDialsThree" Path="Text" Mode="OneWay" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox x:Name="allSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="6">
+                            <TextBox.Text>
+                                <MultiBinding Converter="{StaticResource AddListRecordsConverter}">
+                                    <Binding ElementName="allSaturationOne" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allSaturationTwo" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allSaturationThree" Path="Text" Mode="OneWay" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox x:Name="allPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="6" />
+                        <TextBox x:Name="allPercentWorked"  Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="6" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allPercentWorked_LostFocus" />
+                        <TextBox x:Name="allPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="6" Text="0.0" />
+        
+                        <TextBox x:Name="massRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="9" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="massRecords_LostFocus" />
+                        <TextBox x:Name="massDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="9" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="massDials_LostFocus" />
+                        <TextBox x:Name="massSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="9" />
+                        <TextBox x:Name="massPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="9" />
+                        <TextBox x:Name="massPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="9" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="massPercentWorked_LostFocus" />
+                        <TextBox x:Name="massPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="9" Text="0.0" />
+                        <TextBox x:Name="nhRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="10" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nhRecords_LostFocus" />
+                        <TextBox x:Name="nhDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="10" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nhDials_LostFocus" />
+                        <TextBox x:Name="nhSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="10" />
+                        <TextBox x:Name="nhPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="10" />
+                        <TextBox x:Name="nhPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="10" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nhPercentWorked_LostFocus" />
+                        <TextBox x:Name="nhPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="10" Text="0.0" />
+                        <TextBox x:Name="nonContRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="11" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nonContRecords_LostFocus" />
+                        <TextBox x:Name="nonContDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="11" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nonContDials_LostFocus" />
+                        <TextBox x:Name="nonContSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="11" />
+                        <TextBox x:Name="nonContPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="11" />
+                        <TextBox x:Name="nonContPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="11" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="nonContPercentWorked_LostFocus" />
+                        <TextBox x:Name="nonContPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="11" Text="0.0" />
+                        <TextBox x:Name="orRecords"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="12" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="orRecords_LostFocus" />
+                        <TextBox x:Name="orDials"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="12" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="orDials_LostFocus" />
+                        <TextBox x:Name="orSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="12" />
+                        <TextBox x:Name="orPercentTotal" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="12" />
+                        <TextBox x:Name="orPercentWorked"  Style="{StaticResource dataEntryTextBox}" Grid.Column="5" Grid.Row="12" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="orPercentWorked_LostFocus" />
+                        <TextBox x:Name="orPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="6" Grid.Row="12" Text="0.0" />
+                        <TextBox x:Name="combinedRecords" Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="13">
+                            <TextBox.Text>
+                                <MultiBinding Converter="{StaticResource AddListRecordsConverter}">
+                                    <Binding ElementName="massCellRecords" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="miCellRecords" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allRecords" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="massRecords" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="nhRecords" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="nonContRecords" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="orRecords" Path="Text" Mode="OneWay" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox x:Name="combinedDials" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="13">
+                            <TextBox.Text>
+                                <MultiBinding Converter="{StaticResource AddListRecordsConverter}">
+                                    <Binding ElementName="massCellDials" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="miCellDials" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allDialsOne" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allDialsTwo" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allDialsThree" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="massDials" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="nhDials" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="nonContDials" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="orDials" Path="Text" Mode="OneWay" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox x:Name="combinedSaturation" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="13" />
+                        <TextBox x:Name="combinedPassPercent" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="13">
+                            <TextBox.Text>
+                                <MultiBinding Converter="{StaticResource AddListRecordsConverter}">
+                                    <Binding ElementName="massCellPassPercent" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="miCellPassPercent" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="allPassPercentAverage" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="massPassPercent" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="nhPassPercent" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="nonContPassPercent" Path="Text" Mode="OneWay" />
+                                    <Binding ElementName="orPassPercent" Path="Text" Mode="OneWay" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <!--<TextBox x:Name="combinedPercentWorkedTwo" Style="{StaticResource readOnlyTextBox}" Grid.Column="7" Grid.Row="13"  />-->
+                        <!--<TextBox x:Name="combinedPercentWorkedThree" Style="{StaticResource readOnlyTextBox}" Grid.Column="9" Grid.Row="13"  /> -->
+                    </Grid>
+                    <Expander x:Name="allListExpander" Background="LightYellow" DockPanel.Dock="Right" HorizontalAlignment="Right" ExpandDirection="Right" IsExpanded="False" Height="{Binding ElementName=esGrid, Path=ActualHeight}" Collapsed="allListExpander_OnCollapsed" Expanded="AllListExpander_OnExpanded">
+                        <Expander.Header>
+                            <TextBlock Text="All List Detail" HorizontalAlignment="Center">
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="90"></RotateTransform>
+                                </TextBlock.LayoutTransform>
+                            </TextBlock>
+                        </Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{Binding ElementName=esGridRowZero, Path=ActualHeight}" />
+                                <RowDefinition Height="{Binding ElementName=esGridRowOne, Path=ActualHeight}" />
+                                <RowDefinition Height="{Binding ElementName=esGridRowTwo, Path=ActualHeight}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label Content="Records" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                            <Label Content="Dials" Grid.Column="1" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                            <Label Content="Saturation" Grid.Column="2" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+                            <TextBlock Text="% of Total Callables" Grid.Column="3" Grid.Row="3" TextAlignment="Center" TextWrapping="Wrap" Width="60" />
+                            <TextBlock Text="% of Accounts Worked" Grid.Column="4" Grid.Row="3" TextAlignment="Center" TextWrapping="Wrap" Width="60"/>
+                            <Label Content="Pass %" Grid.Column="5" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
+
+                            <TextBox x:Name="allRecordsOne"  Style="{StaticResource readOnlyTextBox}" Grid.Column="0" Grid.Row="4" Text="{Binding ElementName=allRecords, Path=Text}" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allRecords_LostFocus" />
+                            <TextBox x:Name="allDialsOne"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="4" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allDialsOne_LostFocus" />
+                            <TextBox x:Name="allSaturationOne" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="4" />
+                            <TextBox x:Name="allPercentTotalOne" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="4" Text="{Binding ElementName=allPercentTotal, Path=Text}" />
+                            <TextBox x:Name="allPercentWorkedOne"  Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="4" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allPercentWorkedOne_LostFocus" />
+                            <TextBox x:Name="allPassPercentOne" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="4" Text="0.0" />
+
+                            <TextBox x:Name="allRecordsTwo"  Style="{StaticResource readOnlyTextBox}" Grid.Column="0" Grid.Row="5" Text="{Binding ElementName=allRecords, Path=Text}" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allRecords_LostFocus" />
+                            <TextBox x:Name="allDialsTwo"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allDialsTwo_LostFocus" />
+                            <TextBox x:Name="allSaturationTwo" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="5" />
+                            <TextBox x:Name="allPercentTotalTwo" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="5"  Text="{Binding ElementName=allPercentTotal, Path=Text}" />
+                            <TextBox x:Name="allPercentWorkedTwo"  Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="5" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allPercentWorkedTwo_LostFocus" />
+                            <TextBox x:Name="allPassPercentTwo" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="5" Text="0.0" />
+
+                            <TextBox x:Name="allRecordsThree"  Style="{StaticResource readOnlyTextBox}" Grid.Column="0" Grid.Row="6" Text="{Binding ElementName=allRecords, Path=Text}" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allRecords_LostFocus" />
+                            <TextBox x:Name="allDialsThree"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="6" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allDialsThree_LostFocus" />
+                            <TextBox x:Name="allSaturationThree" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="6" />
+                            <TextBox x:Name="allPercentTotalThree" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="6"  Text="{Binding ElementName=allPercentTotal, Path=Text}" />
+                            <TextBox x:Name="allPercentWorkedThree"  Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="6" GotFocus="SelectAllOnFocus_GotFocus" LostFocus="allPercentWorkedThree_LostFocus" />
+                            <TextBox x:Name="allPassPercentThree" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="6" Text="0.0" />
+                            <TextBox x:Name="allPassPercentAverage"  Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="7" GotFocus="SelectAllOnFocus_GotFocus">
+                                <TextBox.Text>
+                                    <MultiBinding Converter="{StaticResource AverageListRecordsConverter}">
+                                        <Binding ElementName="allPassPercentOne" Path="Text" Mode="OneWay" />
+                                        <Binding ElementName="allPassPercentTwo" Path="Text" Mode="OneWay" />
+                                        <Binding ElementName="allPassPercentThree" Path="Text" Mode="OneWay" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </Grid>
+                    </Expander>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Late Stage" x:Name="lateStageTab" MouseLeftButtonUp="lateStageTab_MouseLeftButtonUp">
                 <Grid>
@@ -173,7 +317,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Button x:Name="sendEmailLS" Content="Send Email" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Height="Auto"/>
+                    <DatePicker x:Name="recordDateLS" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectedDateChanged="recordDateLS_SelectedDateChanged"/>
                     <Label Content="Calls" Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Center"/>
                     <Label Content="Connects" Grid.Column="2" Grid.Row="2" HorizontalContentAlignment="Center"/>
                     <Label Content="RPCs" Grid.Column="3" Grid.Row="2" HorizontalContentAlignment="Center"/>
@@ -216,23 +360,33 @@
                     <TextBox x:Name="passThreeConnectsEntryLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="10" Height="30" LostFocus="passThreeConnectsEntryLS_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
                     <TextBox x:Name="passThreeContactEntryLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="3" Grid.Row="10" Height="30" LostFocus="passThreeContactEntryLS_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
                     <TextBox x:Name="passThreePromiseEntryLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="10" Height="30" LostFocus="passThreePromiseEntryLS_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <Button x:Name="importDataLS" Content="Import Call Data" Grid.Column="7" Grid.Row="1" />
-                    <Button x:Name="importWrapLS" Content="Import Wrap" Grid.Column="9" Grid.Row="1" />
+                    <Label Content="Start" Grid.Column="10" Grid.Row="2"  HorizontalContentAlignment="Center"/>
+                    <Label Content="Max" Grid.Column="11" Grid.Row="2"  HorizontalContentAlignment="Center"/>
+                    <Label Content="End" Grid.Column="12" Grid.Row="2"  HorizontalContentAlignment="Center"/>
                     <Label Content="Start" Grid.Column="7" Grid.Row="2"  HorizontalContentAlignment="Center"/>
-                    <Label Content="Max" Grid.Column="8" Grid.Row="2"  HorizontalContentAlignment="Center"/>
-                    <Label Content="End" Grid.Column="9" Grid.Row="2"  HorizontalContentAlignment="Center"/>
-                    <Label Content="Pass 1" Grid.Column="6" Grid.Row="3" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="passOneStartLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="passOneMaxLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="passOneEndLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="9" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <Label Content="Pass 2" Grid.Column="6" Grid.Row="4" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="passTwoStartLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="passTwoMaxLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="passTwoEndLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="9" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <Label Content="Pass 3" Grid.Column="6" Grid.Row="5" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="passThreeStartLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="passThreeMaxLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="passThreeEndLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="9" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <Label Content="End" Grid.Column="8" Grid.Row="2"  HorizontalContentAlignment="Center"/>
+                    <Label Content="Elapsed" Grid.Column="9" Grid.Row="2"  HorizontalContentAlignment="Center"/>
+                    <Label Content="Pass 1" Grid.Column="6" Grid.Row="3" Margin="30,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passOneStartTimeLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneEndTimeLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneElapsedTimeLS" Style="{StaticResource readOnlyTextBox}" Grid.Column="9" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneStartLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="10" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneMaxLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="11" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneEndLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="12" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <Label Content="Pass 2" Grid.Column="6" Grid.Row="4" Margin="30,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passTwoStartTimeLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoEndTimeLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoElapsedTimeLS" Style="{StaticResource readOnlyTextBox}" Grid.Column="9" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoStartLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="10" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoMaxLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="11" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoEndLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="12" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <Label Content="Pass 3" Grid.Column="6" Grid.Row="5" Margin="30,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passThreeStartTimeLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeEndTimeLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeElapsedTimeLS" Style="{StaticResource readOnlyTextBox}" Grid.Column="9" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeStartLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="10" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeMaxLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="11" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeEndLS" Style="{StaticResource dataEntryTextBox}" Grid.Column="12" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
 
 
                 </Grid>
@@ -273,68 +427,76 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Button x:Name="sendEmailLM" Content="Send Email" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Height="Auto"/>
+                    <DatePicker x:Name="recordDateLM" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectedDateChanged="recordDateLM_SelectedDateChanged"/>
                     <Label Content="Calls" Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Center"/>
                     <Label Content="Connects" Grid.Column="2" Grid.Row="2" HorizontalContentAlignment="Center"/>
                     <Label Content="RPCs" Grid.Column="3" Grid.Row="2" HorizontalContentAlignment="Center"/>
                     <Label Content="Promises" Grid.Column="4" Grid.Row="2" HorizontalContentAlignment="Center"/>
                     <Label Content="Closure" Grid.Column="5" Grid.Row="2" HorizontalContentAlignment="Center"/>
-                    <Label Content="7, 8, 10 am" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="tenCallsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="3" Height="30" />
-                    <TextBox x:Name="tenConnectsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="3" Height="30" />
-                    <TextBox x:Name="tenContactLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="3" Height="30" />
-                    <TextBox x:Name="tenPromiseLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="3" Height="30" />
-                    <TextBox x:Name="tenClosure" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="3" Height="30" />
-                    <Label Content="2 pm" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="twoCallsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="4" Height="30" />
-                    <TextBox x:Name="twoConnectsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="4" Height="30" />
-                    <TextBox x:Name="twoContactLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="4" Height="30" />
-                    <TextBox x:Name="twoPromiseLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="4" Height="30" />
-                    <TextBox x:Name="twoClosure" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="4" Height="30" />
-                    <Label Content="7 pm" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="sevenCallsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="5" Height="30" />
-                    <TextBox x:Name="sevenConnectsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="5" Height="30" />
-                    <TextBox x:Name="sevenContactLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="5" Height="30" />
-                    <TextBox x:Name="sevenPromiseLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="5" Height="30" />
-                    <TextBox x:Name="sevenClosure" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="5" Height="30" />
-                    <Label Content="Calls" Grid.Column="1" Grid.Row="7"  />
-                    <Label Content="Connects" Grid.Column="2" Grid.Row="7"  />
-                    <Label Content="RPCs" Grid.Column="3" Grid.Row="7"  />
-                    <Label Content="Promises" Grid.Column="4" Grid.Row="7"  />
-                    <Label Content="After 10 am" Grid.Column="0" Grid.Row="8" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="tenCallsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="8" Height="30" LostFocus="tenCallsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="tenConnectsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="8" Height="30" LostFocus="tenConnectsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="tenContactEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="3" Grid.Row="8" Height="30" LostFocus="tenContactEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="tenPromiseEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="8" Height="30" LostFocus="tenPromiseEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <Label Content="After 2 pm" Grid.Column="0" Grid.Row="9" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="twoCallsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="9" Height="30" LostFocus="twoCallsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="twoConnectsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="9" Height="30" LostFocus="twoConnectsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="twoContactEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="3" Grid.Row="9" Height="30" LostFocus="twoContactEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="twoPromiseEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="9" Height="30" LostFocus="twoPromiseEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <Label Content="After 7 pm" Grid.Column="0" Grid.Row="10" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="sevenCallsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="10" Height="30" LostFocus="sevenCallsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="sevenConnectsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="10" Height="30" LostFocus="sevenConnectsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="sevenContactEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="3" Grid.Row="10" Height="30" LostFocus="sevenContactEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="sevenPromiseEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="10" Height="30" LostFocus="sevenPromiseEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <Button x:Name="importDataLM" Content="Import Call Data" Grid.Column="7" Grid.Row="1" />
-                    <Button x:Name="importWrapLM" Content="Import Wrap" Grid.Column="9" Grid.Row="1" />
-                    <Label Content="Start" Grid.Column="7" Grid.Row="2" HorizontalContentAlignment="Center" />
-                    <Label Content="Max" Grid.Column="8" Grid.Row="2" HorizontalContentAlignment="Center" />
-                    <Label Content="End" Grid.Column="9" Grid.Row="2" HorizontalContentAlignment="Center" />
-                    <Label Content="7, 8, 10 am" Grid.Column="6" Grid.Row="3" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="tenStartLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="tenMaxLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="tenEndLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="9" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <Label Content="2 pm" Grid.Column="6" Grid.Row="4" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="twoStartLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="twoMaxLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="twoEndLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="9" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <Label Content="7 pm" Grid.Column="6" Grid.Row="5" HorizontalContentAlignment="Right"/>
-                    <TextBox x:Name="sevenStartLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="sevenMaxLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-                    <TextBox x:Name="sevenEndLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="9" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
-
-
+                    <Label Content="Pass 1" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passOneCallsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="3" Height="30" />
+                    <TextBox x:Name="passOneConnectsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="3" Height="30" />
+                    <TextBox x:Name="passOneContactLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="3" Height="30" />
+                    <TextBox x:Name="passOnePromiseLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="3" Height="30" />
+                    <TextBox x:Name="passOneClosureLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="3" Height="30" />
+                    <Label Content="Pass 2" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passTwoCallsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="4" Height="30" />
+                    <TextBox x:Name="passTwoConnectsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="4" Height="30" />
+                    <TextBox x:Name="passTwoContactLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="4" Height="30" />
+                    <TextBox x:Name="passTwoPromiseLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="4" Height="30" />
+                    <TextBox x:Name="passTwoClosureLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="4" Height="30" />
+                    <Label Content="Pass 3" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passThreeCallsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="5" Height="30" />
+                    <TextBox x:Name="passThreeConnectsLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="5" Height="30" />
+                    <TextBox x:Name="passThreeContactLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="5" Height="30" />
+                    <TextBox x:Name="passThreePromiseLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="4" Grid.Row="5" Height="30" />
+                    <TextBox x:Name="passThreeClosureLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="5" Height="30" />
+                    <Label Content="Calls" Grid.Column="1" Grid.Row="7" HorizontalContentAlignment="Center" />
+                    <Label Content="Connects" Grid.Column="2" Grid.Row="7" HorizontalContentAlignment="Center" />
+                    <Label Content="RPCs" Grid.Column="3" Grid.Row="7" HorizontalContentAlignment="Center" />
+                    <Label Content="Promises" Grid.Column="4" Grid.Row="7" HorizontalContentAlignment="Center" />
+                    <Label Content="Pass 1" Grid.Column="0" Grid.Row="8" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passOneCallsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="8" Height="30" LostFocus="passOneCallsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneConnectsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="8" Height="30" LostFocus="passOneConnectsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneContactEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="3" Grid.Row="8" Height="30" LostFocus="passOneContactEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOnePromiseEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="8" Height="30" LostFocus="passOnePromiseEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <Label Content="Pass 2" Grid.Column="0" Grid.Row="9" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passTwoCallsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="9" Height="30" LostFocus="passTwoCallsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoConnectsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="9" Height="30" LostFocus="passTwoConnectsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoContactEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="3" Grid.Row="9" Height="30" LostFocus="passTwoContactEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoPromiseEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="9" Height="30" LostFocus="passTwoPromiseEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <Label Content="Pass 3" Grid.Column="0" Grid.Row="10" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passThreeCallsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="10" Height="30" LostFocus="passThreeCallsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeConnectsEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="10" Height="30" LostFocus="passThreeConnectsEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeContactEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="3" Grid.Row="10" Height="30" LostFocus="passThreeContactEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreePromiseEntryLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="4" Grid.Row="10" Height="30" LostFocus="passThreePromiseEntryLM_LostFocus" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <Label Content="Start" Grid.Column="10" Grid.Row="2" HorizontalContentAlignment="Center" />
+                    <Label Content="Max" Grid.Column="11" Grid.Row="2" HorizontalContentAlignment="Center" />
+                    <Label Content="End" Grid.Column="12" Grid.Row="2" HorizontalContentAlignment="Center" />
+                    <Label Content="Start" Grid.Column="7" Grid.Row="2"  HorizontalContentAlignment="Center"/>
+                    <Label Content="End" Grid.Column="8" Grid.Row="2"  HorizontalContentAlignment="Center"/>
+                    <Label Content="Elapsed" Grid.Column="9" Grid.Row="2"  HorizontalContentAlignment="Center"/>
+                    <Label Content="Pass 1" Grid.Column="6" Grid.Row="3" Margin="30,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passOneStartTimeLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneEndTimeLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneElapsedTimeLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="9" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneStartLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="10" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneMaxLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="11" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passOneEndLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="12" Grid.Row="3" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <Label Content="Pass 2" Grid.Column="6" Grid.Row="4" Margin="30,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passTwoStartTimeLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoEndTimeLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoElapsedTimeLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="9" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoStartLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="10" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoMaxLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="11" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passTwoEndLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="12" Grid.Row="4" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <Label Content="Pass 3" Grid.Column="6" Grid.Row="5" Margin="30,0,0,0" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="passThreeStartTimeLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="7" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeEndTimeLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="8" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeElapsedTimeLM" Style="{StaticResource readOnlyTextBox}" Grid.Column="9" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeStartLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="10" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeMaxLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="11" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
+                    <TextBox x:Name="passThreeEndLM" Style="{StaticResource dataEntryTextBox}" Grid.Column="12" Grid.Row="5" Height="30" GotFocus="SelectAllOnFocus_GotFocus" />
                 </Grid>
             </TabItem>
             <TabItem Header="Weekend" x:Name="weekendTab">
@@ -372,17 +534,14 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>                    
-                    <Button x:Name="sendEmailWeekend" Content="Send Email" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" />
-                    <Button x:Name="importCallDataWeekend" Content="Import Call Data" Grid.Column="7" Grid.Row="0" Grid.ColumnSpan="2" />
-                    <Button x:Name="importWrapDataWeekend" Content="Import Wrap Data" Grid.Column="9" Grid.Row="0" Grid.ColumnSpan="2" />
-                    
+                    </Grid.RowDefinitions>
+                    <DatePicker x:Name="recordDateWE" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectedDateChanged="recordDateWE_SelectedDateChanged" />
                     <Label Content="Records" Grid.Column="1" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom"/>
                     <Label Content="Dials" Grid.Column="2" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
                     <Label Content="Saturation" Grid.Column="3" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
                     <TextBlock Text="% of Total Callables" Grid.Column="4" Grid.Row="2" TextAlignment="Center" TextWrapping="Wrap" Width="50" />
                     <TextBlock Text="% of Accounts Worked" Grid.Column="5" Grid.Row="2" TextAlignment="Center" TextWrapping="Wrap" Width="50"/>
-                    <Label Content="Pass %" Grid.Column="6" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />                    
+                    <Label Content="Pass %" Grid.Column="6" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" />
                     <Label Content="Target A" Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" />
                     <Label Content="Target B" Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" />
                     <Label Content="Target C" Grid.Column="0" Grid.Row="5" HorizontalContentAlignment="Right" />
@@ -424,7 +583,7 @@
                     <TextBox x:Name="lslmCombinedRecordsWeekend"  Style="{StaticResource readOnlyTextBox}" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Center" Width="50" Margin="0,0,2,3" IsReadOnly="True" Background="LightGray" IsTabStop="False" />
                     <TextBox x:Name="lslmCombinedDialsWeekend"  Style="{StaticResource readOnlyTextBox}" Grid.Column="2" Grid.Row="8" HorizontalAlignment="Center" Width="50" Margin="0,0,2,3" IsReadOnly="True" Background="LightGray" IsTabStop="False" />
                     <TextBox x:Name="lslmCombinedSaturationWeekend"  Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="8" HorizontalAlignment="Center" Width="50" Margin="0,0,2,3" IsReadOnly="True" Background="LightGray" IsTabStop="False" />
-                    <TextBox x:Name="lslmCombinedPercentWorkedWeekend"  Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="8" HorizontalAlignment="Center" Width="50" Margin="0,0,2,3" IsReadOnly="True" Background="LightGray" IsTabStop="False" />                    
+                    <TextBox x:Name="lslmCombinedPercentWorkedWeekend"  Style="{StaticResource readOnlyTextBox}" Grid.Column="5" Grid.Row="8" HorizontalAlignment="Center" Width="50" Margin="0,0,2,3" IsReadOnly="True" Background="LightGray" IsTabStop="False" />
                     <TextBox x:Name="esAllRecordsWeekend"  Style="{StaticResource dataEntryTextBox}" Grid.Column="1" Grid.Row="10" HorizontalAlignment="Center" Width="50" Margin="0,0,2,3" />
                     <TextBox x:Name="esAllDialsWeekend"  Style="{StaticResource dataEntryTextBox}" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Center" Width="50" Margin="0,0,2,3" />
                     <TextBox x:Name="esAllSaturationWeekend"  Style="{StaticResource readOnlyTextBox}" Grid.Column="3" Grid.Row="10" HorizontalAlignment="Center" Width="50" Margin="0,0,2,3" IsReadOnly="True" Background="LightGray" IsTabStop="False" />
@@ -451,9 +610,9 @@
             <TabItem Header="Reports" x:Name="reportsTab">
             </TabItem>
             <TabItem Header="Instrument ID's" x:Name="instrumentIdsTab">
-                <DataGrid>
-                    
-                </DataGrid>
+                <DataGrid x:Name="instrumentIdDataGrid" ColumnWidth="*" ColumnHeaderStyle="{StaticResource datagridCenterHeaderStyle}" CellStyle="{StaticResource datagridCenterCellStyle}"
+                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="5,5,5,5" AutoGenerateColumns="True"
+                          AutoGeneratingColumn="instrumentIdDataGrid_AutoGeneratingColumn" />
             </TabItem>
         </TabControl>
     </Grid>

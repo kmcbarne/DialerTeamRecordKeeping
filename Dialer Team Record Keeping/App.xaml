@@ -11,18 +11,33 @@
             <Setter Property="Text" Value="0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="IsReadOnly" Value="True" />
-            <Setter Property="IsTabStop" Value="True" />
-            <Setter Property="Width" Value="50" />
-            <Setter Property="Margin" Value="0,0,2,3"  />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Margin" Value="2,0,2,3"  />
         </Style>
         <!--Style for data entry TextBox control-->
         <Style x:Key="dataEntryTextBox" TargetType="TextBox">
             <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Width" Value="50" />
-            <Setter Property="Margin" Value="0,0,2,3" />
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Margin" Value="2,0,2,3" />
             <Setter Property="Text" Value="0" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="VerticalContentAlignment" Value="Center"  />            
+            <Setter Property="VerticalContentAlignment" Value="Center" />            
+        </Style>
+        <Style x:Key="datagridCenterCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="datagridCenterHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
     </Application.Resources>
 </Application>
