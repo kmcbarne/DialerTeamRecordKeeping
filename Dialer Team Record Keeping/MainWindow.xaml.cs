@@ -642,7 +642,7 @@ namespace Dialer_Team_Record_Keeping
             List<ListProgressData> individualLists;
         }
 
-        private void ShowHideCanvases(Canvas selectedCanvas)
+        private void ShowHideCanvases(Canvas selectedCanvas, System.Windows.Controls.Border selectedBorder)
         {
             //Sets all canvas Visibility properties to Collapsed
             dialerTeamCanvas.Visibility = Visibility.Collapsed;
@@ -650,29 +650,48 @@ namespace Dialer_Team_Record_Keeping
             lateStageCanvas.Visibility = Visibility.Collapsed;
             lossMitCanvas.Visibility = Visibility.Collapsed;
             weekendCanvas.Visibility = Visibility.Collapsed;
+            instrumentIDCanvas.Visibility = Visibility.Collapsed;
+
+            showDialerPressed.Background = Brushes.Transparent;
+            showEarlyStagePressed.Background = Brushes.Transparent;
+            showLateStagePressed.Background = Brushes.Transparent;
+            showLossMitPressed.Background = Brushes.Transparent;
+            showWeekendPressed.Background = Brushes.Transparent;
+            showInstrumentsPressed.Background = Brushes.Transparent;
 
             //Sets selected canvas Visibility property to Visible
-            selectedCanvas.Visibility = Visibility.Visible;            
+            selectedCanvas.Visibility = Visibility.Visible;
+            selectedBorder.Background = Brushes.LightBlue;      
+        }
+        
+        private void showDialerRecords_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideCanvases(dialerTeamCanvas, showDialerPressed);
         }
 
         private void showEarlyStage_Click(object sender, RoutedEventArgs e)
         {
-            ShowHideCanvases(earlyStageCanvas);
+            ShowHideCanvases(earlyStageCanvas, showEarlyStagePressed);            
         }
 
         private void showLateStage_Click(object sender, RoutedEventArgs e)
         {
-            ShowHideCanvases(lateStageCanvas);
+            ShowHideCanvases(lateStageCanvas, showLateStagePressed);
         }
 
         private void showLossMit_Click(object sender, RoutedEventArgs e)
         {
-            ShowHideCanvases(lossMitCanvas);
+            ShowHideCanvases(lossMitCanvas, showLossMitPressed);
         }
 
         private void showWeekend_Click(object sender, RoutedEventArgs e)
         {
-            ShowHideCanvases(weekendCanvas);
+            ShowHideCanvases(weekendCanvas, showWeekendPressed);
+        }
+
+        private void showInstruments_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideCanvases(instrumentIDCanvas, showInstrumentsPressed);
         }
     }    
 }

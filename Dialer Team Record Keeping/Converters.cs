@@ -141,4 +141,22 @@ namespace Dialer_Team_Record_Keeping
             throw new NotImplementedException();
         }
     }
+
+    public class ParentBorderSizeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            double targetWidth = (double)value;
+            double border = double.Parse(parameter.ToString());
+
+            targetWidth += border;
+
+            return targetWidth;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
