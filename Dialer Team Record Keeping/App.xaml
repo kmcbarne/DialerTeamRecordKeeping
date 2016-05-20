@@ -39,5 +39,6 @@
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
+
     </Application.Resources>
 </Application>

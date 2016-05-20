@@ -641,5 +641,38 @@ namespace Dialer_Team_Record_Keeping
         {
             List<ListProgressData> individualLists;
         }
+
+        private void ShowHideCanvases(Canvas selectedCanvas)
+        {
+            //Sets all canvas Visibility properties to Collapsed
+            dialerTeamCanvas.Visibility = Visibility.Collapsed;
+            earlyStageCanvas.Visibility = Visibility.Collapsed;
+            lateStageCanvas.Visibility = Visibility.Collapsed;
+            lossMitCanvas.Visibility = Visibility.Collapsed;
+            weekendCanvas.Visibility = Visibility.Collapsed;
+
+            //Sets selected canvas Visibility property to Visible
+            selectedCanvas.Visibility = Visibility.Visible;            
+        }
+
+        private void showEarlyStage_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideCanvases(earlyStageCanvas);
+        }
+
+        private void showLateStage_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideCanvases(lateStageCanvas);
+        }
+
+        private void showLossMit_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideCanvases(lossMitCanvas);
+        }
+
+        private void showWeekend_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideCanvases(weekendCanvas);
+        }
     }    
 }
